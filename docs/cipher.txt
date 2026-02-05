@@ -1,0 +1,126 @@
+Ciphering Feature
+2/4/26
+Joshua Yoo
+
+This program entry point will be the Main class.
+
+This program takes no command-line arguments.
+
+This program accepts a ciphered string and outputs the deciphered
+version of that string using a cipher key stored in an external file.
+
+The cipher key is stored in a file named "key.txt" inside the
+"ciphers" directory, located at the root of the project. The cipher
+file contains exactly two lines:
+- Line 1: the actual (decoded) characters
+- Line 2: the corresponding cipher characters
+
+Each character in the first line maps directly to the character in
+the same position on the second line.
+
+Before deciphering, the cipher must be validated. The cipher is valid
+only if:
+- Both lines exist
+- Both lines are the same length
+- No duplicate characters appear in either line
+
+If the cipher is invalid, the program prints an error message and
+terminates.
+
+Once validated, the program reads a ciphered string, replaces each
+cipher character with its matching actual character, and prints the
+decoded result. Characters not found in the cipher are printed
+unchanged.
+
+Pseudocode
+
+load cipher file "ciphers/key.txt"
+
+read first line as actualCharacters
+read second line as cipherCharacters
+
+if actualCharacters length != cipherCharacters length
+    print error and exit
+
+if actualCharacters contains duplicate characters
+    print error and exit
+
+if cipherCharacters contains duplicate characters
+    print error and exit
+
+print "Cipher Key"
+print actualCharacters
+print cipherCharacters
+print blank line
+
+prompt user for original text
+read originalText
+
+print "Original"
+print originalText
+print blank line
+
+create empty string cipheredText
+
+for each character c in originalText
+    if c exists in actualCharacters
+        find index i of c in actualCharacters
+        append cipherCharacters[i] to cipheredText
+    else
+        append c to cipheredText
+
+print "Ciphered text"
+print cipheredText
+print blank line
+
+create empty string decipheredText
+
+for each character c in cipheredText
+    if c exists in cipherCharacters
+        find index i of c in cipherCharacters
+        append actualCharacters[i] to decipheredText
+    else
+        append c to decipheredText
+
+print "Deciphered text"
+print decipheredText
+
+
+
+Tests
+Given key.txt:
+abcdefghijklmnopqrstuvwxyz
+bcdefghijklmnopqrstuvwxyza
+
+Original input:
+dog
+
+Expected output:
+
+Cipher Key
+abcdefghijklmnopqrstuvwxyz
+bcdefghijklmnopqrstuvwxyza
+
+Original
+dog
+
+Ciphered text
+eph
+
+Deciphered text
+dog
+
+
+cipher("dog") should return eph
+decipher("eph") should return dog
+
+cipher("xyz") should return yza
+decipher("yza") should return xyz
+
+cipher("a-b!") should return b-c!
+decipher("b-c!") should return a-b!
+
+validateCipher() should return true for valid, same-length keys
+validateCipher() should return false if duplicate characters exist
+validateCipher() should return false if key lengths do not match
+
