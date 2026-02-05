@@ -1,0 +1,19 @@
+Bo Turnage
+Computing ID: bzr4gu
+February 4, 2026
+Homework 2
+
+This program will use a command line interface in the terminal to take user input and
+it will run from the TopSecret class
+
+If the user runs the TopSecret class from the command line with no arguments (e.g. java
+topsecret), the program will print out a list of the files in the library available for
+display
+
+If the user runs it with a number as an argument (e.g. java topsecret 01), the program will
+display the contents of the matching file
+
+Finally, the command line will look for a second argument to determine if an alternate key
+should be used in deciphering the file
+
+The program will use JUnit for testing as well as Mockito in the test files
