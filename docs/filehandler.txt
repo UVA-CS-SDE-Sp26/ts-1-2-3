@@ -15,11 +15,15 @@ ReadFiles(takes in name of file requested as arg):
 Look inside "data" folder
 Loop through folder and get each file's name
 If file isn't found, return error message
-If file is found, return eveyrthing inside it as a string
+If file is found, return everything inside it as a string
 
 TESTS
+findFiles()
+Given "data" folder doesn't exist, should return empty list
 Given no files in "data" folder, should return empty list
 Given a file named "file1.txt" in "data" folder, should return list with "file1.txt"
 Given a file named "file1.txt" and "file2.txt" in "data" folder, should return list with "file1.txt" and "file2.txt"
-Given non-existing file name to ReadFiles, should return some error
-Given existing file name with content "abc123" to ReadFiles, should return "abc123"
+
+readFile()
+Given non-existing file name to ReadFiles, should return empty string
+Given existing file name with content "abc\n123" to ReadFiles, should return "abc\n123\n"
