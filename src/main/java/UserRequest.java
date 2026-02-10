@@ -1,9 +1,9 @@
-public class UserInterface {
+public class UserRequest {
     private final boolean listFiles;
     private final String fileNumber;
     private final String cipherKey;
 
-    public UserInterface(boolean listFiles, String fileNumber, String cipherKey) {
+    public UserRequest(boolean listFiles, String fileNumber, String cipherKey) {
         this.listFiles = listFiles;
         this.fileNumber = fileNumber;
         this.cipherKey = cipherKey;

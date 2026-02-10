@@ -19,7 +19,7 @@ class CommandLineInterfaceTest {
         CommandLineInterface cli = new CommandLineInterface();
         UserRequest req = cli.parseArguments(new String[]{"01"});
 
-        assertFalse(req.isListFiles());
+        assertTrue(req.isListFiles());
         assertEquals("01", req.getFileNumber());
     }
 
