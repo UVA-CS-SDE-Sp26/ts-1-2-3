@@ -3,19 +3,25 @@ import java.io.*;
 
 public class Cipher {
 
-    protected static final String FILE_PATH = "ciphers/key.txt";
-    protected HashMap<Character, Character> encryptor, decryptor;
+    protected static String DEFAULT_FILE_PATH = "ciphers/key.txt";
 
-    public Cipher() throws FileNotFoundException {
-        this(new Scanner(new File(FILE_PATH)));
-        encryptor = new HashMap<>();
-        decryptor = new HashMap<>();
+    protected HashMap<Character, Character> encryptor;
+    protected HashMap<Character, Character> decryptor;
+
+    public Cipher(String word) throws FileNotFoundException {
+        this(word, DEFAULT_FILE_PATH);
     }
-    Cipher(Scanner keyScanner) {
+
+    public Cipher(String word, String filePath) throws FileNotFoundException {
+        this(new Scanner(new File(filePath)));
+    }
+
+    public Cipher(Scanner keyScanner) {
         encryptor = new HashMap<>();
         decryptor = new HashMap<>();
         setup(keyScanner);
     }
+
     private void setup(Scanner s) {
         String original = s.next();
         String ciphered = s.next();
@@ -27,6 +33,7 @@ public class Cipher {
             decryptor.put(ciphered.charAt(i), original.charAt(i));
         }
     }
+
     public String encrypt(String text) {
         StringBuilder sb = new StringBuilder();
         for (char c : text.toCharArray()) {
@@ -37,6 +44,7 @@ public class Cipher {
         }
         return sb.toString();
     }
+
     public String decrypt(String text) {
         StringBuilder sb = new StringBuilder();
         for (char c : text.toCharArray()) {
@@ -47,6 +55,7 @@ public class Cipher {
         }
         return sb.toString();
     }
+
     public String ciphering(String text) {
         String ciphered = encrypt(text);
         String deciphered = decrypt(ciphered);
