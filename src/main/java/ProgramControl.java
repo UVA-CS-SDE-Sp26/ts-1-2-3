@@ -10,38 +10,35 @@ public class ProgramControl{
         this.fileHandler = fileHandler;
     }
 
-    public void run(String[] args) {
+    public String run(String[] args) {
 
-        //pull from the CLI to get what argument we need
         UserRequest req = cli.parseArguments(args);
-
-        //displsay list of files
         ArrayList<String> files = fileHandler.findFiles();
 
-        //dif null output all files
+        // If no argument, return file list
         if (req.getFileNumber() == null) {
+
+            StringBuilder result = new StringBuilder();
 
             for (int i = 0; i < files.size(); i++) {
                 String num = String.format("%02d", i + 1);
-                System.out.println(num + " " + files.get(i));
+                result.append(num)
+                        .append(" ")
+                        .append(files.get(i))
+                        .append("\n");
             }
-            return;
-        }
 
+            return result.toString();
+        }
 
         int index = Integer.parseInt(req.getFileNumber()) - 1;
 
         if (index < 0 || index >= files.size()) {
-            System.out.println("Error: selection out of range");
-            return;
+            return "Error: selection out of range";
         }
 
         String filename = files.get(index);
-
-        //read file using file handler
-        String contents = fileHandler.readFile(filename);
-
-        //print the content
-        System.out.println(contents);
+        return fileHandler.readFile(filename);
     }
+
 }
