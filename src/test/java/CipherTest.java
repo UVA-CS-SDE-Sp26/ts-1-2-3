@@ -10,37 +10,32 @@ class CipherTest {
 
     @Test
     void encryptAndDecrypt_workCorrectly() {
-        Cipher cipher = new Cipher(new Scanner("ABCD WXYZ"));
-
-        // Encrypt
-        String encrypted = cipher.encrypt("ABCD");
-        assertEquals("WXYZ", encrypted);
+        Cipher cipher = new Cipher("WZYXWYZ", "ABCD\nWXYZ");
 
         // Decrypt
-        String decrypted = cipher.decrypt(encrypted);
-        assertEquals("ABCD", decrypted);
+        String decrypted = cipher.decrypt("WZYXWYZ");
+        assertEquals("ADCBACD", decrypted);
     }
 
     @Test
     void ciphering_returnsCorrectOutput() {
-        Cipher cipher = new Cipher(new Scanner("AB XY"));
+        Cipher cipher = new Cipher("XY", "AB\nXY");
 
-        String result = cipher.ciphering("AB");
+        String result = cipher.ciphering("XY");
 
-        assertTrue(result.contains("Original:\nAB"));
         assertTrue(result.contains("Ciphered:\nXY"));
         assertTrue(result.contains("Deciphered:\nAB"));
     }
 
     @Test
     void encrypt_throwsExceptionForInvalidCharacter() {
-        Cipher cipher = new Cipher(new Scanner("AB XY"));
+        Cipher cipher = new Cipher("AC", "AB\nXY");
 
-        assertThrows(IllegalArgumentException.class, () -> cipher.encrypt("AC"));
+        assertThrows(IllegalArgumentException.class, () -> cipher.decrypt("AC"));
     }
 
     @Test
     void invalidKey_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Cipher(new Scanner("ABC XY"))); // lengths mismatch
+        assertThrows(IllegalArgumentException.class, () -> new Cipher("ASDO", "ABC\nXY")); // lengths mismatch
     }
 }
