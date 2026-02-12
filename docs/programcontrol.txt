@@ -1,0 +1,9 @@
+Raiyan Amiruddin
+RWE8GZ
+HW 2
+
+The program control uses the CLI to pull what the user said in the terminal and store it as a input.
+This class takes in the FileHandler and CommandLineInterface as a input.
+Depending on whether the input is null or a file, it will properly display the needed file.
+If input is a null, it will display the names of all the files.
+If the input is within the range of files, it will read the content, if not it will display an error message.
