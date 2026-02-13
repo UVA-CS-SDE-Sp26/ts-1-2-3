@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 import java.io.*;
 
+// There are 2 methods actually used in FileHandler class but cannot test with mockito unless mock objects are passed in.
+// So each method has an overloaded method used only for mockito tests
+// So all lines inside overloaded methods are tested but not the ones in the other original since those are not testable with mockito
 class FileHandlerTest {
     @Test
     void noDataFolder() {
@@ -147,6 +150,45 @@ class FileHandlerTest {
         verify(mockScanner, times(3)).hasNextLine();
         verify(mockScanner, times(3)).hasNextLine();
         verify(mockScanner, times(2)).nextLine();
+        verifyNoMoreInteractions(mockFolder);
+    }
+
+    @Test
+    void dataFolderInReadFileMethodDoesNotExist() {
+        FileHandler fileHandler = new FileHandler();
+        Scanner mockScanner = mock(Scanner.class);
+
+        File mockFolder = mock(File.class);
+        when(mockFolder.exists()).thenReturn(false);
+
+        String result = fileHandler.readFile(mockFolder, "nonExistingFolder", mockScanner);
+
+        assertEquals("", result, "Should return empty string");
+        verify(mockFolder).exists();
+        verifyNoMoreInteractions(mockFolder);
+    }
+
+    @Test
+    void scannerThrowsException() {
+        FileHandler fileHandler = new FileHandler();
+        Scanner mockScanner = mock(Scanner.class);
+
+        File mockFolder = mock(File.class);
+        when(mockFolder.exists()).thenReturn(true);
+        when(mockFolder.isDirectory()).thenReturn(true);
+        when(mockFolder.getName()).thenReturn("data");
+        when(mockScanner.hasNextLine()).thenThrow(new RuntimeException("Scanner Error"));
+
+        File mockFile = mock(File.class);
+        when(mockFile.getName()).thenReturn("file2.txt");
+        when(mockFolder.listFiles()).thenReturn(new File[] {mockFile});
+
+        String result = fileHandler.readFile(mockFolder, "file2.txt", mockScanner);
+        assertEquals("", result, "Should return empty string");
+        verify(mockFolder).exists();
+        verify(mockFolder).isDirectory();
+        verify(mockFolder).getName();
+        verify(mockFolder).listFiles();
         verifyNoMoreInteractions(mockFolder);
     }
 }

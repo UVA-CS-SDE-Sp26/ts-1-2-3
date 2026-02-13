@@ -4,6 +4,10 @@ import java.io.*;
 // Sources:
 // https://www.geeksforgeeks.org/java/java-program-to-traverse-in-a-directory/
 // https://www.w3schools.com/java/java_files_read.asp
+
+// There are 2 methods actually used in FileHandler class but cannot test with mockito unless mock objects are passed in.
+// So each method has an overloaded method used only for mockito tests
+// So all lines inside overloaded methods are tested but not the ones in the other original since those are not testable with mockito
 public class FileHandler {
     // Method to use for actual program
     public ArrayList<String> findFiles(){
