@@ -6,7 +6,7 @@ public class TopSecret {
         FileHandler fileHandler = new FileHandler();
         CommandLineInterface cli = new CommandLineInterface();
         ProgramControl pc = new ProgramControl(cli, fileHandler);
-        pc.run(args);
+        String file = pc.run(args);
 
     }
 }
