@@ -1,25 +1,44 @@
 //package java;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.Scanner;
-
+import java.io.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CipherTest {
 
-    @Test
-    void encryptAndDecrypt_workCorrectly() {
-        Cipher cipher = new Cipher("WZYXWYZ", "ABCD\nWXYZ");
+    private File createTempKeyFile(String content) throws IOException {
+        File tempFile = File.createTempFile("key", ".txt");
+        tempFile.deleteOnExit();
 
-        // Decrypt
+        try (FileWriter writer = new FileWriter(tempFile)) {
+            writer.write(content);
+        }
+
+        return tempFile;
+    }
+
+    @Test
+    void decrypt_worksCorrectly() throws Exception {
+        File keyFile = createTempKeyFile("ABCD\nWXYZ");
+        Cipher cipher = new Cipher("", keyFile.getAbsolutePath());
+
         String decrypted = cipher.decrypt("WZYXWYZ");
         assertEquals("ADCBACD", decrypted);
     }
 
     @Test
-    void ciphering_returnsCorrectOutput() {
-        Cipher cipher = new Cipher("XY", "AB\nXY");
+    void decrypt_preservesCharactersNotInKey() throws Exception {
+        File keyFile = createTempKeyFile("AB\nXY");
+        Cipher cipher = new Cipher("", keyFile.getAbsolutePath());
+
+        String decrypted = cipher.decrypt("XZ!");
+        assertEquals("AZ!", decrypted);
+    }
+
+    @Test
+    void ciphering_returnsCorrectFormattedOutput() throws Exception {
+        File keyFile = createTempKeyFile("AB\nXY");
+        Cipher cipher = new Cipher("", keyFile.getAbsolutePath());
 
         String result = cipher.ciphering("XY");
 
@@ -28,14 +47,24 @@ class CipherTest {
     }
 
     @Test
-    void encrypt_throwsExceptionForInvalidCharacter() {
-        Cipher cipher = new Cipher("AC", "AB\nXY");
+    void invalidKey_wrongNumberOfLines_throwsException() throws Exception {
+        File keyFile = createTempKeyFile("ABC XY");
 
-        assertThrows(IllegalArgumentException.class, () -> cipher.decrypt("AC"));
+        assertThrows(IllegalArgumentException.class,
+                () -> new Cipher("", keyFile.getAbsolutePath()));
     }
 
     @Test
-    void invalidKey_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Cipher("ASDO", "ABC\nXY")); // lengths mismatch
+    void invalidKey_lengthMismatch_throwsException() throws Exception {
+        File keyFile = createTempKeyFile("ABC\nXY");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Cipher("", keyFile.getAbsolutePath()));
+    }
+
+    @Test
+    void fileNotFound_doesNotCrashConstructor() {
+        assertDoesNotThrow(() ->
+                new Cipher("", "non_existent_file.txt"));
     }
 }

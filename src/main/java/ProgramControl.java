@@ -28,7 +28,8 @@ public class ProgramControl{
                         .append("\n");
             }
 
-            return result.toString();
+            System.out.println(result.toString());
+            return "";
         }
 
         int index = Integer.parseInt(req.getFileNumber()) - 1;
